@@ -17,9 +17,13 @@
             </div>
 
             <div class="shadow p-3 mb-5 bg-body rounded">
+                <% 
+                %>
+                
                 <%
+                process.env.TZ = 'America/Chicago'
                 var date = new Date();
-
+              
                 //FOR DATE                
                 const formatted_date = (date.getMonth() + 1) + "-" + date.getDate() + "-" + date.getFullYear();
                 const formatted_date2 = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
