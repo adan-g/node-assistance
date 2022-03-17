@@ -8,7 +8,7 @@ app.use(express.urlencoded({entended:false}));
 app.use(express.json());
 
 //set enviroment variable
-dotenv.config({path: './env/.env'})
+dotenv.config({path: './env/.env'});
 
 app.use('/', require('./router'));
 
