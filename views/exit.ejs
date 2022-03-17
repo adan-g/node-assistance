@@ -11,6 +11,7 @@
 </head>
 <body>
     <div class="container">
+      <div class="row">
         <form method="POST" action="/saveExit">
             <div class="text-center my-4">
                 <h3>Check-out</h3>
@@ -45,11 +46,20 @@
                 <label for="entryTime" class="form-label">Exit Time</label>
                 <input type="text" class="form-control" value="<%= hours %>" id="exiTime" name="exiTime">
               </div>
+
             </div>
 
-            <button type="submit" class="btn btn-primary">Check out</button>
-            <a href="/" class="btn btn-primary">Cancel</a>
+            <div class="row row-cols-1">
+              <div class="d-grid col col-md-2 mb-2">
+                <button type="submit" class="btn btn-primary">Check out</button>
+              </div>
+           
+              <div class="d-grid col col-md-2 mb-2">
+                <a href="/" class="btn btn-primary">Cancel</a>
+              </div>
+            </div>
         </form>  
+      </div>
 
     </div>
 </body>

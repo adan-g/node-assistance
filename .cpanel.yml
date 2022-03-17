@@ -1,0 +1,4 @@
+deployment:
+  task:
+  - export DEPLOYPATH=/home/grcouxmy/node-assistance/
+  - /bin/cp -R views/ $DEPLOYPATH 

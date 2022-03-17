@@ -58,7 +58,6 @@
                 
 
                 Object.keys(results).forEach(key => {  
-  
                   
                   if (results[key].day=='monday'){
                     monday = results[key];                                    
@@ -156,7 +155,8 @@
               </tr>
           </tbody>
         </table>
-
+      </div>
+      
         <div class="p-2 my-4 bg-dark text-white fw-bold d-flex justify-content-between">
           <div>
             <% 
@@ -173,7 +173,24 @@
           </div>
         </div>
 
-      </div>
+        <div class="p-2 my-4 bg-dark text-white fw-bold d-flex justify-content-between">
+          <div>
+            <%
+              let hoursLunch = '';
+              Object.keys(totaLunch).forEach(key => { 
+                hoursLunch = totaLunch[key].totaLunch;
+              });
+
+            %>
+            Total hours lunch:
+          </div>
+
+          <div>
+            <%= hoursLunch %>
+          </div>
+        </div>
+
+      
     
     <div>
       <a href="/entry" class="btn btn-primary">Check-in</a>
