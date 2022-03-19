@@ -10,9 +10,10 @@ router.get('/', async(req, res) => {
     try{   
       const results = await query('SELECT * FROM assistance WHERE week = ?', week);
 
-      const totalHours = await query('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(a.exit, a.entry)))) AS hours from assistance a WHERE a.week = ?', week);
+      const totalHours = await query('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(a.exit, a.entry))) - SUM(TIME_TO_SEC(a.lunch))) AS hours from assistance a WHERE a.week = ?', week);
 
       const totaLunch = await query('SELECT time_format(SUM(a.lunch), "%H:%i") AS totaLunch from assistance a WHERE a.week = ?', week);
+
 
       res.render('index', {
         results,
