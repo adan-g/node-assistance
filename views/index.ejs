@@ -47,6 +47,7 @@
               <th scope="col">ENTRY</th>
               <th scope="col">EXIT</th>
               <th scope="col">LUNCH</th>
+              <th scope="col">HOURS DAY</th>
               <th scope="col">DATE</th>
               <th scope="col">PROPERTY</th>
             </tr>
@@ -97,6 +98,7 @@
                   <td><%= monday['entry'] %></td>      
                   <td><%= monday['exit'] %></td>
                   <td><%= monday['lunch'] %></td>
+                  <td><%= monday['hoursDay'] %></td>
                   <td><%= (monday['date']) ? monday['date'].toLocaleDateString("en-EN") : '' %></td>
                   <td><%= monday['property'] %></td>
               </tr>
@@ -106,6 +108,7 @@
                 <td><%= tuesday['entry'] %></td>      
                 <td><%= tuesday['exit'] %></td>
                 <td><%= tuesday['lunch'] %></td>
+                <td><%= tuesday['hoursDay'] %></td>
                 <td><%= (tuesday['date']) ? tuesday['date'].toLocaleDateString("en-EN") : '' %></td>
                 <td><%= tuesday['property'] %></td>
               </tr>
@@ -115,6 +118,7 @@
                 <td><%= wednesday['entry'] %></td>      
                 <td><%= wednesday['exit'] %></td>
                 <td><%= wednesday['lunch'] %></td>
+                <td><%= wednesday['hoursDay'] %></td>
                 <td><%= (wednesday['date']) ? wednesday['date'].toLocaleDateString("en-EN") : '' %></td>
                 <td><%= wednesday['property'] %></td>
               </tr>
@@ -124,6 +128,7 @@
                 <td><%= thursday['entry'] %></td>      
                 <td><%= thursday['exit'] %></td>
                 <td><%= thursday['lunch'] %></td>
+                <td><%= thursday['hoursDay'] %></td>
                 <td><%= (thursday['date']) ? thursday['date'].toLocaleDateString("en-EN") : '' %></td>
                 <td><%= thursday['property'] %></td>
               </tr>
@@ -133,6 +138,7 @@
                 <td><%= friday['entry'] %></td>      
                 <td><%= friday['exit'] %></td>
                 <td><%= friday['lunch'] %></td>
+                <td><%= friday['hoursDay'] %></td>
                 <td><%= (friday['date']) ? friday['date'].toLocaleDateString("en-EN") : '' %></td>
                 <td><%= friday['property'] %></td>
               </tr>
@@ -142,6 +148,7 @@
                 <td><%= saturday['entry'] %></td>      
                 <td><%= saturday['exit'] %></td>
                 <td><%= saturday['lunch'] %></td>
+                <td><%= saturday['hoursDay'] %></td>
                 <td><%= (saturday['date']) ? saturday['date'].toLocaleDateString("en-EN") : '' %></td>
                 <td><%= saturday['property'] %></td>
               </tr>
@@ -151,6 +158,7 @@
                 <td><%= sunday['entry'] %></td>      
                 <td><%= sunday['exit'] %></td>
                 <td><%= sunday['lunch'] %></td>
+                <td><%= sunday['hoursDay'] %></td>
                 <td><%= (sunday['date']) ? sunday['date'].toLocaleDateString("en-EN") : '' %></td>
                 <td><%= sunday['property'] %></td>
               </tr>
@@ -158,29 +166,13 @@
         </table>
       </div>
 
-      <div class="p-2 my-4 bg-dark text-white fw-bold d-flex justify-content-between">
-        <div>
-          <%
-            let hoursLunch = '';
-            Object.keys(totaLunch).forEach(key => { 
-              hoursLunch = totaLunch[key].totaLunch;
-            });
-
-          %>
-          Total hours lunch:
-        </div>
-
-        <div>
-          <%= hoursLunch %>
-        </div>
-      </div>
 
       <div class="p-2 my-4 bg-dark text-white fw-bold d-flex justify-content-between">
         <div>
           <% 
             let hours = '';
-            Object.keys(totalHours).forEach(key => { 
-              hours = totalHours[key].hours;
+            Object.keys(totalHoursWeek).forEach(key => { 
+              hours = totalHoursWeek[key].hours;
             });
           %>
           Total hours:
@@ -196,7 +188,7 @@
       
       <div class="row row-cols-1">
         <div class="d-grid col col-md-2 mb-2">
-          <a href="/entry" class="btn btn-primary"><i class="fa-solid fa-play"></i> Check-in</a>
+          <a href="/entry" class="btn btn-success"><i class="fa-solid fa-play"></i> Check-in</a>
         </div>
        
         <div class="d-grid col col-md-2 mb-2">
