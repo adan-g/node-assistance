@@ -4,7 +4,7 @@ const query = require('./database/db')
 const { DateTime } = require("luxon");
 const crud = (require('./controllers/crud'));
 
-router.get('/:week', async(req, res) => {
+router.get('/week/:week', async(req, res) => {
     const week = req.params.week;
   
     try{   
