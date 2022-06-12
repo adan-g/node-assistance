@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=title%></title>
+
+    <%- include('partials/head'); %> 
+</head>
+<body>     
+    
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <div class="col-xs-12 col-sm-4 mt-5">
+                <div class="d-flex align-items-center flex-column mb-4">
+                    <div style="font-size: 3rem;">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <div>
+                        <h4>
+                            login to Assistance
+                        </h4>
+                    </div>
+                </div>
+                
+
+                <% if (locals.message) { %>
+                    <% Object.keys(locals.message).forEach(key => { %>
+                                                                    
+                        <div class="<%= (Object.keys(locals.message)) %>">
+                            <%= locals.message[key] %>
+                        </div>
+                        
+                    <% }) %>                                
+                <% } %>
+
+                <form class="shadow p-3 mb-5 bg-body rounded" method="POST" action="/login">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</button>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <a href="/signUp" class="text-decoration-none"><i class="fa-solid fa-circle-plus"></i> Create Account</a>
+                    </div>
+                    <div class="">
+                        <a href="/resetPassword" class="text-decoration-none"><i class="fa-solid fa-lock"></i> i forget my password</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

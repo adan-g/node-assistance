@@ -1,20 +1,88 @@
 const { DateTime } = require("luxon");
-const query = require('../database/db');
+const db = require('../database/db');
+const Assistance = require('../models/Assistance');
 
-exports.saveEntry = (req, res)=>{
+
+exports.currentWeek = async (req,res) => {
+  const week = DateTime.now().weekNumber
+  const userId = res.locals.user.id;
+
+  try{
+    const results = await Assistance.findAll({
+        where: {
+          week: week, 
+          userId
+        }
+    });
+    
+    const { QueryTypes } = require('sequelize');
+    const totalHoursWeek = await db.query('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(a.exit, a.entry))) - (SUM(IFNULL(TIME_TO_SEC(a.lunch),0)))) AS hours FROM assistance a WHERE a.week = ? AND userId = ?',{
+        replacements: [week, userId],
+        type: QueryTypes.SELECT
+    });
+    
+    
+    res.render('index', {
+      results,
+      totalHoursWeek
+    });
+    
+  }catch(error){
+    console.log(error)
+  } 
+}
+
+
+exports.otherWeek = async(req, res) => {
+    const week = req.params.week;
+  
+    try{
+      const results = await Assistance.findAll({
+        where: {
+            week: week 
+        }
+      });   
+    
+      const { QueryTypes } = require('sequelize');
+      const totalHoursWeek = await db.query('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(a.exit, a.entry))) - (SUM(IFNULL(TIME_TO_SEC(a.lunch),0)))) AS hours from assistance a WHERE a.week = ?',{
+        replacements: [week],
+        type: QueryTypes.SELECT
+      });
+
+      res.render('index', {
+        results,
+        totalHoursWeek
+      });
+      
+    }catch(error){
+      console.log(error)
+    }  
+};
+
+
+exports.entry = async (req, res) => {
+  res.render('entry');
+}
+
+exports.exit = async (req, res) => {
+  res.render('exit');
+}
+
+exports.saveEntry = async (req, res)=>{
     const entry = req.body.entryTime;
     const date = req.body.entryDate;
     const day = req.body.entryDay;
     const week = DateTime.now().weekNumber;
     const property = req.body.entryProperty;
+    const userId = res.locals.user.id;
     
     try{
-        query('INSERT INTO assistance SET ?', {id_user: 1, nombre:'adan', day:day, entry:entry, date:date, week:week, property:property});
+      await Assistance.create({userId, day, entry, date, week, property})
 
-        res.redirect('/');
+      res.redirect('/');
 
     }catch(error){
-        console.log(error);
+      console.log(error);
     }
 }
 
@@ -27,44 +95,35 @@ exports.saveExit = async(req, res)=>{
         timeLunch = '00:00:00';
     }
 
+    const currentlyDate = DateTime.utc().toLocal();
+    
     try{
-        const entry = await query('SELECT entry FROM assistance WHERE date = curdate()');
-        let hoursDay = await query('SELECT SEC_TO_TIME(TIME_TO_SEC(TIMEDIFF("' + exit + '", "' + entry[0].entry + '")) - (TIME_TO_SEC("' + timeLunch + '"))) AS hoursDay');
+      const entry = await Assistance.findAll({
+        attributes: ['entry'],
+        where: {
+          date: currentlyDate
+        }
+    });
 
-        await query('UPDATE assistance SET ? WHERE date = curdate()', {exit:exit, lunch:timeLunch, hoursDay: hoursDay[0].hoursDay});
-        res.redirect('/')
+      
+      const { QueryTypes } = require('sequelize');
+      let hoursDay = await db.query('SELECT SEC_TO_TIME(TIME_TO_SEC(TIMEDIFF("' + exit + '", "' + entry[0].entry + '")) - (TIME_TO_SEC("' + timeLunch + '"))) AS hoursDay',{
+        type: QueryTypes.SELECT
+      });
+
+      
+      await Assistance.update({
+        exit: exit,
+        lunch: timeLunch,
+        hoursDay: hoursDay[0].hoursDay       
+      },
+      {
+        where: {date: currentlyDate}
+      });
+
+
+      res.redirect('/')
     }catch(error){
         console.log(error);
     }
-}
-
-
-exports.calculoEntreHours = (inicio, fin) => {
-    
-    inicioMinutos = parseInt(inicio.substr(3,2));
-    inicioHoras = parseInt(inicio.substr(0,2));
-    
-    finMinutos = parseInt(fin.substr(3,2));
-    finHoras = parseInt(fin.substr(0,2));
-  
-    transcurridoMinutos = finMinutos - inicioMinutos;
-    transcurridoHoras = finHoras - inicioHoras;
-    
-    if (transcurridoMinutos < 0) {
-      transcurridoHoras--;
-      transcurridoMinutos = 60 + transcurridoMinutos;
-    }
-    
-    horas = transcurridoHoras.toString();
-    minutos = transcurridoMinutos.toString();
-    
-    if (horas.length < 2) {
-      horas = "0"+horas;
-    }
-    
-    if (horas.length < 2) {
-      horas = "0"+horas;
-    }
-      
-    console.log(horas+":"+minutos)
 }
