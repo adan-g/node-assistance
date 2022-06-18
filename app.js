@@ -43,12 +43,7 @@ db.sync({ force: false , alter : true })
     .then(() => console.log('conne to server'))
     .catch(error => console.log(error));
 
-//models
-//require('./models/Assistance');
-//require('./models/Users');
 
-
-
-app.listen(1000, () => {
+app.listen(4000, () => {
     console.log('Server up!')
 });
