@@ -44,6 +44,6 @@ db.sync({ force: false , alter : true })
     .catch(error => console.log(error));
 
 
-app.listen(4000, () => {
-    console.log('Server up!')
+app.listen(process.env.SERVER_PORT, () => {
+    console.log(`Server up! listening on http://${process.env.DB_HOST}:${process.env.SERVER_PORT}`);
 });
